@@ -1,17 +1,9 @@
 [flake8]
-max-line-lenght = 79
+disable-noqa = True
+ignore = W503
+filename =
+    ./homework.py
 max-complexity = 10
-ignore =
-    W503,
-    F811,
-    D100, D101, D102, D103, D104, D105, D106, D107,
-    D203, D205, D213,
-    D400, D401,
-    N806, N818
+max-line-length = 79
 exclude =
-    tests/
-    */migrations/
-    venv/
-    env/
-per-file-ignores =
-  settings.py:E501
+  tests
