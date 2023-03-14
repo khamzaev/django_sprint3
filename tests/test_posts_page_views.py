@@ -13,8 +13,8 @@ def test_all_unpublished(
     response = user_client.get('/')
     context_post_list = response.context.get(main_page_post_list_context_key)
     assert len(context_post_list) == 0, (
-        'Убедитесь, что если в проекте нет ни одного опубликованного поста - '
-        'то на главной странице нет записей.'
+        'Если в проекте нет ни одного опубликованного поста, '
+        'то на главной странице не должно быть записей.'
     )
 
 
@@ -94,9 +94,9 @@ def test_posts_with_published_location(
     response = user_client.get('/')
     context_post_list = response.context.get(main_page_post_list_context_key)
     assert all(x.location for x in context_post_list), (
-        'Убедитесь, что в словаре контекста для главной страницы '
-        'в объектах постов, '
-        'отмеченных географической меткой, '
+        'Убедитесь, что при обращении к главной странице '
+        'в словаре контекста в объектах постов, '
+        'отмеченных географической меткой '
         'передаётся ключ `location` и значение этого ключа.'
     )
 
@@ -108,8 +108,12 @@ def test_posts_with_unpublished_locations(
     context_post_list = response.context.get(main_page_post_list_context_key)
     assert len(context_post_list) == N_TEST_POSTS, (
         ' Убедитесь, что в словарь контекста главной страницы '
-        'попадают даже те записи, '
+        'попадают даже те записи этой категории, '
         'географическая метка которых не опубликована.'
+    )
+    assert not any(list(x.location for x in context_post_list)), (
+        'Убедитесь, в конексте главной страницы у постов отсутствуют '
+        'неопубликованные географические метки.'
     )
 
 

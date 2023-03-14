@@ -70,8 +70,8 @@ def test_category_page_category_unpublished(
     category_slug = posts_with_unpublished_category[0].category.slug
     response = user_client.get(f'/category/{category_slug}/')
     assert response.status_code == HTTPStatus.NOT_FOUND, (
-        'Убедитесь, что страница категории, снятой с публикации, '
-        'возвращает статус 404.'
+        'Убедитесь, что когда категория снята с публикации, '
+        'её страница возвращает статус 404.'
     )
 
 
@@ -95,10 +95,6 @@ def test_category_page_pub_date_later_today(
         posts_with_future_date,
         category_page_post_list_context_key
 ):
-    if not posts_with_future_date[0].category:
-        raise AssertionError(
-            'В модели `Post` в атрибуте `category` '
-            'проверьте значение параметра `blank` на соответствие заданию.')
     category_slug = posts_with_future_date[0].category.slug
     response = user_client.get(f'/category/{category_slug}/')
     if response.status_code == HTTPStatus.OK:
@@ -119,9 +115,9 @@ def test_category_page_posts_with_location(
     context_post_list = response.context.get(
         category_page_post_list_context_key)
     assert all(x.location for x in context_post_list), (
-        'Убедитесь, что на странице категории '
+        'Убедитесь, что при обращении к странице категории '
         'в объектах постов, отмеченных опубликованной географической '
-        'меткой, передаётся ключ `location` и его значение.'
+        'меткой, передаётся ключ `location` и значение этого ключа.'
     )
 
 
@@ -135,8 +131,12 @@ def test_category_page_posts_with_unpublished_locations(
         category_page_post_list_context_key)
     assert len(context_post_list) == len(posts_with_unpublished_locations), (
         ' Убедитесь, что в словарь контекста страницы категории '
-        'попадают и те записи этой категории, '
-        'географическая метка которых снята с публикации.'
+        'попадают даже те записи этой категории, '
+        'географическая метка которых не опубликована.'
+    )
+    assert not (any(p.location for p in context_post_list)), (
+        'Убедитесь, что на странице категории у постов отсутствует '
+        'географическая метка в случае если она не опубликована.'
     )
 
 
@@ -166,6 +166,5 @@ def test_no_other_posts_on_category_page(
     assert len(context_post_list) == len(
         posts_with_published_locations), (
         'Убедитесь, что на странице категории '
-        'отображаются опубликованные посты, относящиеся исключительно к этой '
-        'категории.'
+        'отображаются относящиеся к ней опубликованные посты и никакие другие.'
     )

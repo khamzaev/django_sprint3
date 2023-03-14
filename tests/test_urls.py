@@ -10,7 +10,7 @@ def test_blog_urls():
         'Убедитесь, что значением переменной `urlpatterns` является список.'
     )
     assert len(solution_urlpatterns) >= 3, (
-        'Убедитесь, что к головному списку `urlpatterns` подключены маршруты '
+        'Убедитесь, что добавили необходимые маршруты в список `urlpatterns` '
         'из файла `blog/urls.py`.'
     )
 
@@ -28,7 +28,7 @@ def test_pages_urls():
         '`pages/urls.py` является список.'
     )
     assert len(solution_urlpatterns) >= 2, (
-        'Убедитесь, что к головному списку `urlpatterns` подключены маршруты '
+        'Убедитесь, что добавили необходимые маршруты в список `urlpatterns` '
         'из файла `pages/urls.py`.'
     )
 
@@ -46,6 +46,6 @@ def test_blogicum_urls():
         '`blogicum/urls.py` является список.'
     )
     assert len(solution_urlpatterns) >= 3, (
-        'Убедитесь, что к головному списку `urlpatterns` подключены маршруты '
+        'Убедитесь, что добавили необходимые маршруты в список `urlpatterns` '
         'из файла `blogicum/urls.py`.'
     )

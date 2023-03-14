@@ -14,14 +14,14 @@ def test_posts_page_pk_published_location(
     response = user_client.get(f'/posts/{post_with_published_location.id}/')
     assert response.status_code == HTTPStatus.OK, (
         'Убедитесь, что опубликованный пост с опубликованной категорией '
-        'и датой публикации в прошлом отображается на отдельной странице '
-        'поста.'
+        'и датой публикации в прошлом отображается на странице публикации.'
     )
     context_post = response.context.get(post_context_key)
     assert context_post == post_with_published_location, (
-        'Убедитесь, что для страницы с адресом (`/posts/<id_поста>/`) в '
-        f'словаре контекста под ключом `{post_context_key}` передаётся объект '
-        'поста с идентификатором, полученным из GET-запроса.'
+        'Убедитесь, что в контекст страницы `/posts/<int:pk>/` '
+        f'под ключом `{post_context_key}` '
+        'передаётся пост c идентификатором `pk`, '
+        'где `pk` - параметр строки запроса.'
     )
 
 
@@ -30,8 +30,13 @@ def test_posts_page_pk_unpublished_location(
     response = user_client.get(f'/posts/{post_with_unpublished_location.id}/')
     assert response.status_code == HTTPStatus.OK, (
         'Убедитесь, что опубликованный пост с опубликованной категорией '
-        'и датой публикации в прошлом отображается на отдельной странице '
-        'поста, даже если его локация снята с публикации.'
+        'и датой публикации в прошлом отображается на странице публикации '
+        'даже если его локация снята с публикации.'
+    )
+    expected_text = 'Планета Земля'
+    assert expected_text in response.content.decode('utf-8'), (
+        'Убедитесь, что на странице публикации без географической метки '
+        f'отображается текст `{expected_text}`.'
     )
 
 
@@ -44,8 +49,7 @@ def test_posts_page_pk_post_doesnt_exists(user_client):
             'во view-функции не возникает необрабатываемого исключения.'
         )
     assert response.status_code != HTTPStatus.OK, (
-        'Убедитесь, что при запросе к несуществующему посту не возвращается '
-        'страница отдельного поста.'
+        'Убедитесь, что не возвращаете страницу несуществующего поста.'
     )
 
 
@@ -63,7 +67,7 @@ def test_posts_page_pk_check_context_keys(
     response = user_client.get(
         f'/posts/{post_with_published_location.id}/')
     assert response.status_code == HTTPStatus.OK, (
-        'Убедитесь, что страница отдельного поста существует и отображается '
+        'Убедитесь, что страница публикации существует и отображается '
         'в соответствии с заданием, если пост опубликован, '
         'у него указана географическая метка и опубликована категория.'
     )
@@ -91,7 +95,7 @@ def test_posts_page_pk_check_context_keys(
 def test_posts_page_pk_unpublished_post(user_client, unpublished_post):
     response = user_client.get(f'/posts/{unpublished_post.id}/')
     assert response.status_code == HTTPStatus.NOT_FOUND, (
-        'Убедитесь, что страница поста, снятого с публикации, '
+        'Убедитесь, что страница неопубликованного поста '
         'возвращает статус 404.'
     )
 
@@ -100,8 +104,8 @@ def test_posts_page_pk_pub_date_later_today(
         user_client, post_with_future_date):
     response = user_client.get(f'/posts/{post_with_future_date.id}/')
     assert response.status_code == HTTPStatus.NOT_FOUND, (
-        'Убедитесь, что если для поста дата публикации установлена в будущем, '
-        'отдельная страница такого поста возвращает статус 404.'
+        'Убедитесь, что если дата публикации в будущем, '
+        'её страница возвращает статус 404.'
     )
 
 
@@ -111,8 +115,8 @@ def test_posts_page_pk_category_unpublished(
 ):
     response = user_client.get(f'/posts/{post_with_unpublished_category.id}/')
     assert response.status_code == HTTPStatus.NOT_FOUND, (
-        'Убедитесь, что если посту присвоена категория, снятая с публикации, '
-        'то отдельная страница этого поста возвращает статус 404.'
+        'Убедитесь, что если категория снята с публикации, '
+        'страница публикации возвращает статус 404.'
     )
 
 
@@ -123,14 +127,13 @@ def test_posts_page_pk_post_with_published_location_and_category(
     response = user_client.get(
         f'/posts/{post_with_published_location.id}/')
     assert response.status_code == HTTPStatus.OK, (
-        'Убедитесь, что если пост не снят с публикации, у него установлена '
-        'географическая метка и его категория не снята с публикации - '
-        'отдельная страница этого поста существует и отображается.'
+        'Убедитесь, что существует и отображается страница опубликованного '
+        'поста с указанной географической меткой и опубликованной категорией.'
     )
     context_post = response.context.get(post_context_key)
     assert context_post == post_with_published_location, (
-        'Убедитесь, что в словарь контекста страницы поста '
+        'Убедитесь, что в контекст страницы публикации '
         f'под ключом `{post_context_key}` '
-        'передаётся объект поста c идентификатором `pk`, '
-        'где `pk` - параметр строки GET-запроса.'
+        'передаётся пост c идентификатором `pk`, '
+        'где `pk` - параметр строки запроса.'
     )
