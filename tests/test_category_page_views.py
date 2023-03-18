@@ -70,8 +70,8 @@ def test_category_page_category_unpublished(
     category_slug = posts_with_unpublished_category[0].category.slug
     response = user_client.get(f'/category/{category_slug}/')
     assert response.status_code == HTTPStatus.NOT_FOUND, (
-        'Убедитесь, что когда категория снята с публикации, '
-        'её страница возвращает статус 404.'
+        'Убедитесь, что страница категории, снятой с публикации, '
+        'возвращает статус 404.'
     )
 
 
@@ -115,9 +115,9 @@ def test_category_page_posts_with_location(
     context_post_list = response.context.get(
         category_page_post_list_context_key)
     assert all(x.location for x in context_post_list), (
-        'Убедитесь, что при обращении к странице категории '
+        'Убедитесь, что на странице категории '
         'в объектах постов, отмеченных опубликованной географической '
-        'меткой, передаётся ключ `location` и значение этого ключа.'
+        'меткой, передаётся ключ `location` и его значение.'
     )
 
 
@@ -131,12 +131,12 @@ def test_category_page_posts_with_unpublished_locations(
         category_page_post_list_context_key)
     assert len(context_post_list) == len(posts_with_unpublished_locations), (
         ' Убедитесь, что в словарь контекста страницы категории '
-        'попадают даже те записи этой категории, '
-        'географическая метка которых не опубликована.'
+        'попадают и те записи этой категории, '
+        'географическая метка которых снята с публикации.'
     )
     assert not (any(p.location for p in context_post_list)), (
-        'Убедитесь, что на странице категории у постов отсутствует '
-        'географическая метка в случае если она не опубликована.'
+        'Убедитесь, что в постах на странице категории отсутствует '
+        'географическая метка, если эта метка снята с публикации.'
     )
 
 
@@ -166,5 +166,5 @@ def test_no_other_posts_on_category_page(
     assert len(context_post_list) == len(
         posts_with_published_locations), (
         'Убедитесь, что на странице категории '
-        'отображаются относящиеся к ней опубликованные посты и никакие другие.'
+        'отображаются опубликованные посты, относящиеся исключительно к этой категории.'
     )

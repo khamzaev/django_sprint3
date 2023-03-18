@@ -34,12 +34,12 @@ def test_author_on_delete(posts_with_author):
         author.delete()
     except IntegrityError:
         raise AssertionError(
-            'Проверьте значение атрибута `on_delete` '
-            'поля `author` модели `Post` на соответствие заданию.'
+            'Проверьте, что значение атрибута `on_delete` '
+            'поля `author` в модели `Post` соответствует заданию.'
         )
     assert not Post.objects.filter(author=author).exists(),  (
-        'Проверьте значение атрибута `on_delete` '
-        'поля `author` модели `Post` на соответствие заданию.'
+        'Проверьте, что значение атрибута `on_delete` '
+        'поля `author` в модели `Post` соответствует заданию.'
     )
 
 
@@ -49,10 +49,10 @@ def test_location_on_delete(posts_with_published_locations):
         location.delete()
     except IntegrityError:
         raise AssertionError(
-            'Проверьте значение атрибута `on_delete` '
-            'поля `location` модели `Post` на соответствие заданию.'
+            'Проверьте, что значение атрибута `on_delete` '
+            'поля `location` в модели `Post` соответствует заданию.'
         )
     assert Post.objects.filter(location=location).exists(), (
-        'Проверьте значение атрибута `on_delete` '
-        'поля `location` модели `Post` на соответствие заданию.'
+        'Проверьте, что значение атрибута `on_delete` '
+        'поля `location` в модели `Post` соответствует заданию.'
     )

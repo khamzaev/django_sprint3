@@ -36,7 +36,7 @@ def test_models_translated(n_model, n_verbose, n_verbose_plural):
         and hasattr(model, 'Meta')
     ]
     assert found_model, (
-        f'Убедитесь, что в задали атрибут Meta в модели `{n_model}`.'
+        f'Убедитесь, что в модели `{n_model}` описан подкласс `Meta`.'
     )
     found_model = found_model[0]
     assert found_model._meta.verbose_name == n_verbose, (
