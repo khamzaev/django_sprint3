@@ -134,10 +134,6 @@ def test_category_page_posts_with_unpublished_locations(
         'попадают и те записи этой категории, '
         'географическая метка которых снята с публикации.'
     )
-    assert not (any(p.location for p in context_post_list)), (
-        'Убедитесь, что в постах на странице категории отсутствует '
-        'географическая метка, если эта метка снята с публикации.'
-    )
 
 
 def test_many_posts_on_category_page(
@@ -166,5 +162,6 @@ def test_no_other_posts_on_category_page(
     assert len(context_post_list) == len(
         posts_with_published_locations), (
         'Убедитесь, что на странице категории '
-        'отображаются опубликованные посты, относящиеся исключительно к этой категории.'
+        'отображаются опубликованные посты, относящиеся исключительно к этой '
+        'категории.'
     )

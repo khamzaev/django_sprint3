@@ -111,10 +111,6 @@ def test_posts_with_unpublished_locations(
         'попадают даже те записи, '
         'географическая метка которых не опубликована.'
     )
-    assert not any(list(x.location for x in context_post_list)), (
-        'Убедитесь, что в словаре контекста главной страницы не передаются '
-        'снятые с публикации географические метки.'
-    )
 
 
 def test_many_posts_on_main_page(

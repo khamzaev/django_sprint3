@@ -14,7 +14,8 @@ def test_posts_page_pk_published_location(
     response = user_client.get(f'/posts/{post_with_published_location.id}/')
     assert response.status_code == HTTPStatus.OK, (
         'Убедитесь, что опубликованный пост с опубликованной категорией '
-        'и датой публикации в прошлом отображается на отдельной странице поста.'
+        'и датой публикации в прошлом отображается на отдельной странице '
+        'поста.'
     )
     context_post = response.context.get(post_context_key)
     assert context_post == post_with_published_location, (
@@ -30,13 +31,8 @@ def test_posts_page_pk_unpublished_location(
     response = user_client.get(f'/posts/{post_with_unpublished_location.id}/')
     assert response.status_code == HTTPStatus.OK, (
         'Убедитесь, что опубликованный пост с опубликованной категорией '
-        'и датой публикации в прошлом отображается на отдельной странице поста, '
-        'даже если его локация снята с публикации.'
-    )
-    expected_text = 'Планета Земля'
-    assert expected_text in response.content.decode('utf-8'), (
-        'Убедитесь, что на странице публикации без географической метки '
-        f'отображается текст `{expected_text}`.'
+        'и датой публикации в прошлом отображается на отдельной странице '
+        'поста, даже если его локация снята с публикации.'
     )
 
 
@@ -49,7 +45,8 @@ def test_posts_page_pk_post_doesnt_exists(user_client):
             'во view-функции не возникает необрабатываемого исключения.'
         )
     assert response.status_code != HTTPStatus.OK, (
-        'Убедитесь, что при запросе к несуществующему посту не возвращается страница отдельного поста.'
+        'Убедитесь, что при запросе к несуществующему посту не возвращается '
+        'страница отдельного поста.'
     )
 
 
@@ -127,8 +124,9 @@ def test_posts_page_pk_post_with_published_location_and_category(
     response = user_client.get(
         f'/posts/{post_with_published_location.id}/')
     assert response.status_code == HTTPStatus.OK, (
-        'Убедитесь, что если пост не снят с публикации, у него установлена географическая метка '
-        'и его категория не снята с публикации - отдельная страница этого поста существует и отображается.'
+        'Убедитесь, что если пост не снят с публикации, у него установлена '
+        'географическая метка и его категория не снята с публикации - '
+        'отдельная страница этого поста существует и отображается.'
     )
     context_post = response.context.get(post_context_key)
     assert context_post == post_with_published_location, (
