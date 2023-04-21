@@ -33,21 +33,21 @@ def test_models_translated(n_model, n_verbose, n_verbose_plural):
     found_model = [
         model for model in models
         if model._meta.object_name == n_model
-        and hasattr(model, 'Meta')
     ]
-    assert found_model, (
-        f'Убедитесь, что в модели `{n_model}` описан подкласс `Meta`.'
-    )
     found_model = found_model[0]
+    assert_msg_template = (
+        'Убедитесь, что в модели `{n_model}` добавлен подкласс `Meta`, в '
+        'котором для параметра `{param_name}` установлено значение в '
+        'соответствии с заданием.'
+    )
     assert found_model._meta.verbose_name == n_verbose, (
-        f'Убедитесь, что в модели `{n_model}` значение для `verbose_name` '
-        'установлено в соответствии с заданием.'
+        assert_msg_template.format(n_model=n_model, param_name='verbose_name')
     )
     assert (
         found_model._meta.verbose_name_plural == n_verbose_plural
     ), (
-        f'Убедитесь, что в модели `{n_model}` значение для '
-        '`verbose_name_plural` установлено в соответствии с заданием.'
+        assert_msg_template.format(n_model=n_model,
+                                   param_name='verbose_name_plural')
     )
 
 
