@@ -1,9 +1,9 @@
 import pytest
+from blog.models import Post
 from django.db.models import (
     BooleanField, CharField, DateTimeField, ForeignKey, TextField)
 from django.db.utils import IntegrityError
 
-from blog.models import Post
 from tests.conftest import _TestModelAttrs
 
 pytestmark = [
@@ -11,16 +11,17 @@ pytestmark = [
 ]
 
 
-@pytest.mark.parametrize(('field', 'type', 'params'), [
-    ('title', CharField, {'max_length': 256}),
-    ('text', TextField, {}),
-    ('pub_date', DateTimeField, {}),
-    ('author', ForeignKey, {'null': False}),
-    ('location', ForeignKey, {'null': True}),
-    ('category', ForeignKey, {'null': True}),  # проверить в notion
-    ('is_published', BooleanField, {'default': True}),
-    ('created_at', DateTimeField, {'auto_now_add': True}),
-])
+@pytest.mark.parametrize(
+    ('field', 'type', 'params'), [
+        ('title', CharField, {'max_length': 256}),
+        ('text', TextField, {}),
+        ('pub_date', DateTimeField, {'auto_now': False, 'auto_now_add': False}),
+        ('author', ForeignKey, {'null': False}),
+        ('location', ForeignKey, {'null': True}),
+        ('category', ForeignKey, {'null': True}),  # проверить в notion
+        ('is_published', BooleanField, {'default': True}),
+        ('created_at', DateTimeField, {'auto_now_add': True}),
+    ])
 class TestCategoryModelAttrs(_TestModelAttrs):
 
     @property
@@ -37,7 +38,7 @@ def test_author_on_delete(posts_with_author):
             'Проверьте, что значение атрибута `on_delete` '
             'поля `author` в модели `Post` соответствует заданию.'
         )
-    assert not Post.objects.filter(author=author).exists(),  (
+    assert not Post.objects.filter(author=author).exists(), (
         'Проверьте, что значение атрибута `on_delete` '
         'поля `author` в модели `Post` соответствует заданию.'
     )
