@@ -65,7 +65,7 @@ def post_context_key(user_client, post_with_published_location):
             post_key = key
             break
     assert post_key, (
-        'Убедитесь, что в контекст страницы поста передан пост.'
+        'Убедитесь, что в контекст страницы поста передан объект поста.'
     )
     return post_key
 

@@ -10,7 +10,7 @@ from tests.conftest import _TestModelAttrs
     ('is_published', BooleanField, {'default': True}),
     ('created_at', DateTimeField, {'auto_now_add': True}),
 ])
-class TestCategoryModelAttrs(_TestModelAttrs):
+class TestLocationModelAttrs(_TestModelAttrs):
 
     @property
     def model(self):

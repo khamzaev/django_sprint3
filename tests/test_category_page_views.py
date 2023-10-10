@@ -95,6 +95,10 @@ def test_category_page_pub_date_later_today(
         posts_with_future_date,
         category_page_post_list_context_key
 ):
+    if not posts_with_future_date[0].category:
+        raise AssertionError(
+            'В модели `Post` в атрибуте `category` '
+            'проверьте значение параметра `blank` на соответствие заданию.')
     category_slug = posts_with_future_date[0].category.slug
     response = user_client.get(f'/category/{category_slug}/')
     if response.status_code == HTTPStatus.OK:
