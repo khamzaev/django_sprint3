@@ -19,10 +19,9 @@ def test_posts_page_pk_published_location(
     )
     context_post = response.context.get(post_context_key)
     assert context_post == post_with_published_location, (
-        'Убедитесь, что в контекст страницы `/posts/<int:pk>/` '
-        f'под ключом `{post_context_key}` '
-        'передаётся пост c идентификатором `pk`, '
-        'где `pk` - параметр из строки GET-запроса.'
+        'Убедитесь, что для страницы с адресом (`/posts/<id_поста>/`) в '
+        f'словаре контекста под ключом `{post_context_key}` передаётся объект '
+        'поста с идентификатором, полученным из GET-запроса.'
     )
 
 
