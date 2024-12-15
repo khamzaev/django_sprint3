@@ -3,13 +3,12 @@ from django.contrib.auth import get_user_model
 
 
 class Category(models.Model):
-    """
-    Модель для описания тематической категории публикации.
-    """
+    """Модель для описания тематической категории публикации."""
+
     title = models.CharField(
         max_length=256,
         verbose_name="Заголовок",
-        help_text = "Введите название категории."
+        help_text ="Введите название категории."
     )
     description = models.TextField(
         verbose_name="Описание",
@@ -42,9 +41,8 @@ class Category(models.Model):
 
 
 class Location(models.Model):
-    """
-    Модель для географической метки публикации.
-    """
+    """Модель для географической метки публикации."""
+
     name = models.CharField(
         max_length=256,
         verbose_name="Название места",
@@ -72,9 +70,8 @@ User = get_user_model()
 
 
 class Post(models.Model):
-    """
-    Модель для описания публикации в блоге.
-    """
+    """Модель для описания публикации в блоге."""
+
     title = models.CharField(
         max_length=256,
         verbose_name="Название категории",

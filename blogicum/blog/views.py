@@ -5,9 +5,7 @@ from .models import Post, Category
 
 
 def index(request):
-    """
-    Отображает главную страницу с последними 5 опубликованными постами.
-    """
+    """Отображает главную страницу с последними 5 опубликованными постами."""
     now = timezone.now()
     posts = Post.objects.filter(
         pub_date__lte=now,
@@ -23,9 +21,7 @@ def index(request):
 
 
 def post_detail(request, id):
-    """
-    Отображает подробную информацию о посте по его ID.
-    """
+    """Отображает подробную информацию о посте по его ID."""
     try:
         post = Post.objects.get(id=id)
         now = timezone.now()

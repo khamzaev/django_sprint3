@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models import Category, Location, Post
 
 
-
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug', 'is_published', 'created_at')
