@@ -8,7 +8,7 @@ class Category(models.Model):
     title = models.CharField(
         max_length=256,
         verbose_name="Заголовок",
-        help_text ="Введите название категории."
+        help_text="Введите название категории."
     )
     description = models.TextField(
         verbose_name="Описание",
