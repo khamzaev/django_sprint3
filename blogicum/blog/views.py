@@ -1,9 +1,10 @@
 from django.http import Http404
 from django.utils import timezone
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from .models import Post, Category
 
 LATEST_POSTS_COUNT = 5
+
 
 def index(request):
     """Отображает главную страницу с последними 5 опубликованными постами."""

@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 MAX_TITLE_LENGTH = 256
 User = get_user_model()
 
+
 class Category(models.Model):
     """Модель для описания тематической категории публикации."""
 
