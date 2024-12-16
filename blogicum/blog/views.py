@@ -1,8 +1,9 @@
 from django.http import Http404
 from django.utils import timezone
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from .models import Post, Category
 
+LATEST_POSTS_COUNT = 5
 
 def index(request):
     """Отображает главную страницу с последними 5 опубликованными постами."""
@@ -11,7 +12,7 @@ def index(request):
         pub_date__lte=now,
         is_published=True,
         category__is_published=True
-    ).order_by('-pub_date')[:5]
+    ).order_by('-pub_date')[:LATEST_POSTS_COUNT]
 
     return render(
         request,
@@ -22,21 +23,14 @@ def index(request):
 
 def post_detail(request, id):
     """Отображает подробную информацию о посте по его ID."""
-    try:
-        post = Post.objects.get(id=id)
-        now = timezone.now()
+    post = get_object_or_404(Post, id=id)
 
-        if post.pub_date > now:
-            raise Http404("Публикация еще не доступна.")
-
-        elif not post.is_published:
-            raise Http404("Публикация не опубликована.")
-
-        elif not post.category.is_published:
-            raise Http404("Категория публикации скрыта.")
-
-    except Post.DoesNotExist:
-        raise Http404(f'Пост с ID {id} не найден.')
+    if (
+            post.pub_date > timezone.now()
+            or not post.is_published
+            or not post.category.is_published
+    ):
+        raise Http404("Публикация недоступна.")
 
     return render(
         request,
@@ -50,21 +44,16 @@ def category_posts(request, category_slug):
     Отображает все посты, относящиеся к заданной категории.
     Если категория не опубликована — возвращаем ошибку 404.
     """
-    try:
-        category = Category.objects.get(slug=category_slug)
+    category = get_object_or_404(Category, slug=category_slug)
 
-        if not category.is_published:
-            raise Http404("Категория скрыта.")
+    if not category.is_published:
+        raise Http404("Категория скрыта.")
 
-        now = timezone.now()
-        posts = Post.objects.filter(
-            category=category,
-            pub_date__lte=now,
-            is_published=True
-        ).order_by('-pub_date')
-
-    except Category.DoesNotExist:
-        raise Http404(f'Категория с slug {category_slug} не найдена.')
+    posts = category.posts.filter(
+        category=category,
+        pub_date__lte=timezone.now(),
+        is_published=True
+    ).order_by('-pub_date')
 
     return render(
         request,

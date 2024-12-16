@@ -1,12 +1,14 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+MAX_TITLE_LENGTH = 256
+User = get_user_model()
 
 class Category(models.Model):
     """Модель для описания тематической категории публикации."""
 
     title = models.CharField(
-        max_length=256,
+        max_length=MAX_TITLE_LENGTH,
         verbose_name="Заголовок",
         help_text="Введите название категории."
     )
@@ -44,7 +46,7 @@ class Location(models.Model):
     """Модель для географической метки публикации."""
 
     name = models.CharField(
-        max_length=256,
+        max_length=MAX_TITLE_LENGTH,
         verbose_name="Название места",
         help_text="Введите название места."
     )
@@ -66,14 +68,11 @@ class Location(models.Model):
         return self.name
 
 
-User = get_user_model()
-
-
 class Post(models.Model):
     """Модель для описания публикации в блоге."""
 
     title = models.CharField(
-        max_length=256,
+        max_length=MAX_TITLE_LENGTH,
         verbose_name="Название категории",
         help_text="Введите заголовок публикации."
     )
@@ -89,20 +88,24 @@ class Post(models.Model):
         )
     )
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE,
+        User,
+        on_delete=models.CASCADE,
+        related_name="posts",
         verbose_name="Автор публикации"
     )
     location = models.ForeignKey(
-        'Location',
+        "Location",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
+        related_name="posts",
         verbose_name="Местоположение",
     )
     category = models.ForeignKey(
-        'Category',
+        "Category",
         on_delete=models.SET_NULL,
         null=True,
+        related_name="posts",
         verbose_name="Категория",
     )
     is_published = models.BooleanField(
