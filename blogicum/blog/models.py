@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-MAX_TITLE_LENGTH = 256
+from constants import MAX_TITLE_LENGTH
+
+
 User = get_user_model()
 
 

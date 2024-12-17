@@ -1,9 +1,9 @@
 from django.http import Http404
 from django.utils import timezone
 from django.shortcuts import render, get_object_or_404
-from .models import Post, Category
 
-LATEST_POSTS_COUNT = 5
+from .models import Post, Category
+from constants import LATEST_POSTS_COUNT
 
 
 def index(request):
@@ -13,12 +13,12 @@ def index(request):
         pub_date__lte=now,
         is_published=True,
         category__is_published=True
-    ).order_by('-pub_date')[:LATEST_POSTS_COUNT]
+    ).order_by("-pub_date")[:LATEST_POSTS_COUNT]
 
     return render(
         request,
-        'blog/index.html',
-        {'post_list': posts}
+        "blog/index.html",
+        {"post_list": posts}
     )
 
 
@@ -35,8 +35,8 @@ def post_detail(request, id):
 
     return render(
         request,
-        'blog/detail.html',
-        {'post': post}
+        "blog/detail.html",
+        {"post": post}
     )
 
 
@@ -54,9 +54,9 @@ def category_posts(request, category_slug):
         category=category,
         pub_date__lte=timezone.now(),
         is_published=True
-    ).order_by('-pub_date')
+    ).order_by("-pub_date")
 
     return render(
         request,
-        'blog/category.html',
-        {'post_list': posts, 'category': category})
+        "blog/category.html",
+        {"post_list": posts, "category": category})
