@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.shortcuts import render, get_object_or_404
 
 from .models import Post, Category
-from constants import LATEST_POSTS_COUNT
+from .constants import LATEST_POSTS_COUNT
 
 
 def index(request):
